@@ -23,6 +23,24 @@
       "type": "income",
       "amount": "65656",
       "id": 4
+    },
+    {
+      "name": "Eeee",
+      "type": "expense",
+      "amount": "255",
+      "id": 5
+    },
+    {
+      "name": "Kkkkk",
+      "type": "expense",
+      "amount": "14444",
+      "id": 6
+    },
+    {
+      "name": "Fff",
+      "type": "expense",
+      "amount": "594915",
+      "id": 7
     }
   ]
 }

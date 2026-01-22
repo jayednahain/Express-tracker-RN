@@ -24,6 +24,7 @@ export default function LandingPage() {
   const [modalTitle, setModalTitle] = useState('');
   const [modalDescription, setModalDescription] = useState('');
   const [modalVisibility, setModalVisibility] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   const dispatch = useDispatch();
   const inputRef = useRef(null);
@@ -87,13 +88,14 @@ export default function LandingPage() {
   };
 
   const renderBottomSheet = () => {
+    let sheetTitle = editMode ? 'Edit Transaction' : 'Add Transaction';
     return (
       <CustomBottomSheet
         onChange={handleSheetChanges}
         bottomSheetModalRef={bottomSheetModalRef}
       >
         <BottomSheetView style={styles.bottomSheetViewContainer}>
-          <H1>Add Transaction</H1>
+          <H1>{sheetTitle}</H1>
           <CustomForm
             inputRef={inputRef}
             onSubmit={postSubmitTransaction}
@@ -115,15 +117,27 @@ export default function LandingPage() {
     );
   };
 
+  const onPressEditTransaction = () => {
+    setEditMode(true);
+
+    bottomSheetModalRef.current?.expand();
+  };
+
+  const onPressDeleteTransaction = () => {};
+
   const renderAllTransactions = () => {
     console.log('transactions ::::: ', transactions);
-    //<ListItemTransaction />
     return (
       <FlatList
         data={transactions}
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
-          <ListItemTransaction key={item.id} currentItem={item} />
+          <ListItemTransaction
+            onPressDelete={onPressDeleteTransaction}
+            onPressEdit={onPressEditTransaction}
+            key={item.id}
+            currentItem={item}
+          />
         )}
       />
     );
@@ -143,6 +157,7 @@ export default function LandingPage() {
 
 const styles = StyleSheet.create({
   container: {
+    paddingHorizontal: 10,
     flex: 1,
     backgroundColor: ThemeColors.background,
   },
