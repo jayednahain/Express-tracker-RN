@@ -1,4 +1,12 @@
 const initialState = {
+  loading: false,
+  error: false,
+  errorText: '',
+  success: false,
+  successText: '',
+
+  currentEditableTransection: {},
+
   transactions: [],
   fetch: {
     loading: false,

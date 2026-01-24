@@ -3,7 +3,7 @@ const ThemeLightColors = {
   colorSecondary: '#C9D2C0',
   colorBlack: '#000000',
   colorWhite: '#FFFFFF',
-  colorWarning: '#D92F31',
+  colorWarning: '#d57a7bff',
   background: '#F5F5F5',
   text: '#212121',
   border: '#E0E0E0',

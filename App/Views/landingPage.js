@@ -15,7 +15,10 @@ import {
   createTransactionThunk,
   fetchTransactionsThunk,
 } from '../Features/Transaction/transactionThunk';
-import { resetCreateState } from '../Features/Transaction/transactionSlice';
+import {
+  resetCreateState,
+  resetCurrentActiveTransection,
+} from '../Features/Transaction/transactionSlice';
 
 export default function LandingPage() {
   const bottomSheetModalRef = useRef(null);
@@ -27,30 +30,51 @@ export default function LandingPage() {
   const [editMode, setEditMode] = useState(false);
 
   const dispatch = useDispatch();
-  const inputRef = useRef(null);
 
   useEffect(() => {
     dispatch(fetchTransactionsThunk());
   }, [dispatch]);
 
-  const { create, fetch, transactions } = useSelector(
-    state => state.transaction,
-  );
+  const {
+    create,
+    fetch,
+    transactions,
+    loading,
+    errorText,
+    error,
+    success,
+    successText,
+  } = useSelector(state => state.transaction);
+
+  // useEffect(() => {
+  //   setModalVisibility(create.loading || fetch.loading);
+  // }, [create.loading, fetch.loading]);
 
   useEffect(() => {
-    setModalVisibility(create.loading || fetch.loading);
-  }, [create.loading, fetch.loading]);
+    setModalVisibility(loading);
+  }, [loading]);
+
+  // Handle create success
+  // useEffect(() => {
+  //   if (create.success) {
+  //     bottomSheetModalRef.current?.collapse();
+  //     setModalTitle('Success');
+  //     setModalDescription('Transaction added successfully');
+  //     setIsModalVisible(true);
+  //     dispatch(resetCreateState());
+  //   }
+  // }, [create.success, dispatch]);
 
   // Handle create success
   useEffect(() => {
-    if (create.success) {
+    if (success) {
       bottomSheetModalRef.current?.collapse();
       setModalTitle('Success');
-      setModalDescription('Transaction added successfully');
+      setModalDescription(successText);
       setIsModalVisible(true);
       dispatch(resetCreateState());
     }
-  }, [create.success, dispatch]);
+  }, [successText, success, dispatch]);
 
   // Handle create error
   useEffect(() => {
@@ -62,6 +86,8 @@ export default function LandingPage() {
     }
   }, [create.error, create.errorText, dispatch]);
 
+  useEffect(() => {}, []);
+
   const handleSheetChanges = index => {
     console.log('handleSheetChanges', index);
     if (index === 0) {
@@ -71,13 +97,13 @@ export default function LandingPage() {
   };
 
   const onPressFloatingButton = () => {
+    dispatch(resetCurrentActiveTransection());
     bottomSheetModalRef.current?.expand();
   };
 
-  const postSubmitTransaction = data => {
-    // console.log('Submitted data:', data);
-    dispatch(createTransactionThunk(data));
-  };
+  // const postSubmitTransaction = data => {
+  //   dispatch(createTransactionThunk(data));
+  // };
 
   const renderFloatingButton = () => {
     return (
@@ -97,9 +123,7 @@ export default function LandingPage() {
         <BottomSheetView style={styles.bottomSheetViewContainer}>
           <H1>{sheetTitle}</H1>
           <CustomForm
-            inputRef={inputRef}
-            onSubmit={postSubmitTransaction}
-            isLoading={create.loading}
+          // onSubmit={postSubmitTransaction}
           />
         </BottomSheetView>
       </CustomBottomSheet>
@@ -119,14 +143,12 @@ export default function LandingPage() {
 
   const onPressEditTransaction = () => {
     setEditMode(true);
-
     bottomSheetModalRef.current?.expand();
   };
 
   const onPressDeleteTransaction = () => {};
 
   const renderAllTransactions = () => {
-    console.log('transactions ::::: ', transactions);
     return (
       <FlatList
         data={transactions}
