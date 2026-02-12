@@ -88,7 +88,7 @@ const transactionSlice = createSlice({
         state.error = false;
         state.success = true;
         state.transactions.push(action.payload);
-        state.successText = 'Transaction created successfully';
+        state.modalSubtitleText = 'Transaction created successfully';
       })
       .addCase(createTransactionThunk.rejected, (state, action) => {
         state.loading = false;
@@ -109,7 +109,7 @@ const transactionSlice = createSlice({
         state.loading = false;
         state.error = false;
         state.success = true;
-        state.successText = 'Transaction updated successfully';
+        state.modalSubtitleText = 'Transaction updated successfully';
 
         const currentUpdatedIndex = state.transactions.findIndex(
           item => item.id === action.payload.id,

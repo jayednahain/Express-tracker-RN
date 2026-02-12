@@ -3,7 +3,7 @@ const initialState = {
   error: false,
   errorText: '',
   success: false,
-  successText: '',
+  modalSubtitleText: '',
 
   currentEditableTransection: {},
 

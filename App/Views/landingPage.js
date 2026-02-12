@@ -10,6 +10,7 @@ import CustomBottomSheet from '../Components/BottomSheet/CustomBottomSheet';
 import CustomModal from '../Components/Modal/CustomModal';
 import LoadingModal from '../Components/Modal/LoadingModal';
 import ListItemTransaction from '../Components/ListItem/ListItemTransaction';
+import CardTotalBalance from '../Components/Card/CardTotalBalance';
 
 import {
   createTransactionThunk,
@@ -43,38 +44,23 @@ export default function LandingPage() {
     errorText,
     error,
     success,
-    successText,
+    modalSubtitleText,
   } = useSelector(state => state.transaction);
-
-  // useEffect(() => {
-  //   setModalVisibility(create.loading || fetch.loading);
-  // }, [create.loading, fetch.loading]);
 
   useEffect(() => {
     setModalVisibility(loading);
   }, [loading]);
 
   // Handle create success
-  // useEffect(() => {
-  //   if (create.success) {
-  //     bottomSheetModalRef.current?.collapse();
-  //     setModalTitle('Success');
-  //     setModalDescription('Transaction added successfully');
-  //     setIsModalVisible(true);
-  //     dispatch(resetCreateState());
-  //   }
-  // }, [create.success, dispatch]);
-
-  // Handle create success
   useEffect(() => {
     if (success) {
       bottomSheetModalRef.current?.collapse();
       setModalTitle('Success');
-      setModalDescription(successText);
+      setModalDescription(modalSubtitleText);
       setIsModalVisible(true);
       dispatch(resetCreateState());
     }
-  }, [successText, success, dispatch]);
+  }, [modalSubtitleText, success, dispatch]);
 
   // Handle create error
   useEffect(() => {
@@ -107,7 +93,7 @@ export default function LandingPage() {
 
   const renderFloatingButton = () => {
     return (
-      <View style={{ position: 'absolute', bottom: 30, right: 30 }}>
+      <View style={{ position: 'absolute', bottom: 80, right: 30 }}>
         <ButtonCircle onPress={onPressFloatingButton} />
       </View>
     );
@@ -165,12 +151,17 @@ export default function LandingPage() {
     );
   };
 
+  const renderTotalBalance = () => {
+    return <CardTotalBalance />;
+  };
+
   return (
     <View style={styles.container}>
       {/* <H1>landingPage</H1> */}
       {renderAllTransactions()}
       {renderFloatingButton()}
       {renderBottomSheet()}
+      {renderTotalBalance()}
       {renderModal()}
       <LoadingModal modalVisibility={modalVisibility} />
     </View>

@@ -4,6 +4,10 @@ const getAllTransactions = async () => {
   try {
     const response = await axiosInstance.get('/transactions');
     console.log('Response from API data: ', JSON.stringify(response.data));
+    setTimeout(() => {
+      return response.data;
+    }, 2000);
+
     return response.data;
   } catch (error) {
     console.log('Error in getAllTransactions:', error);
